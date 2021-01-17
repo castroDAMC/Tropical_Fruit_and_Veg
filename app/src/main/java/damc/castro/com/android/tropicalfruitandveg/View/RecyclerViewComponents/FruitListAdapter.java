@@ -50,6 +50,7 @@ public class FruitListAdapter extends RecyclerView.Adapter {
         for (FruitResume fruitResume : list) {
             this.fruitResumeList.add(fruitResume);
         }
+
         notifyDataSetChanged();
     }
 }
