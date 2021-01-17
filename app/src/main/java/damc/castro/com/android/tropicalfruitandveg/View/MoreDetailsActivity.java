@@ -6,6 +6,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import damc.castro.com.android.tropicalfruitandveg.Controller.KMoreDetailsActivityController;
 import damc.castro.com.android.tropicalfruitandveg.Controller.MoreDetailsActivityController;
 import damc.castro.com.android.tropicalfruitandveg.databinding.ActivityItemDetailBinding;
 
@@ -13,7 +15,7 @@ public class MoreDetailsActivity extends AppCompatActivity {
 
     private ActivityItemDetailBinding binding;
     private String ftvitem = null;
-    private MoreDetailsActivityController mController;
+    private KMoreDetailsActivityController mController;
 
     public String getFtvitem(){
         return this.ftvitem;
@@ -34,6 +36,6 @@ public class MoreDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         ftvitem = intent.getStringExtra("ftvitem");
 
-        mController = new MoreDetailsActivityController(this);
+        mController = new KMoreDetailsActivityController(this);
     }
 }
