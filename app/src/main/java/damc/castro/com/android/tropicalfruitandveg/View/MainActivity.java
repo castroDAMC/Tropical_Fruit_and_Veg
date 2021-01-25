@@ -1,23 +1,26 @@
 package damc.castro.com.android.tropicalfruitandveg.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import damc.castro.com.android.tropicalfruitandveg.Controller.KMainActivityController;
-import damc.castro.com.android.tropicalfruitandveg.Controller.MainActivityController;
+import damc.castro.com.android.tropicalfruitandveg.Model.FruitResume;
+import damc.castro.com.android.tropicalfruitandveg.View.RecyclerViewComponents.FruitListAdapter;
+import damc.castro.com.android.tropicalfruitandveg.ViewModel.MainActivityViewModel;
 import damc.castro.com.android.tropicalfruitandveg.databinding.ActivityMainBinding;
-import lombok.Data;
 
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.view.View;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private MainActivityController mMainController;
-    private KMainActivityController kMainActivityController;
+    private RecyclerView recyclerView;
+    private MainActivityViewModel VM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,16 +29,27 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        setRecyclerViewConfiguration();
 
-        //            mMainController = new MainActivityController(this);
-        kMainActivityController = new KMainActivityController(this);
+        VM = new MainActivityViewModel();
+        VM.getFruitLiveData().observe(
+                this, new Observer<List<FruitResume>>() {
+                    @Override
+                    public void onChanged(List<FruitResume> fruitResumes) {
+                        ((FruitListAdapter)recyclerView.getAdapter()).setFruitResumeList(fruitResumes);
+                    }
+                }
+        );
+
     }
 
-    public ActivityMainBinding getBinding(){
-        return this.binding;
+    private void setRecyclerViewConfiguration() {
+        recyclerView = binding.RVMainActivity;
+        recyclerView.setAdapter(new FruitListAdapter(new ArrayList<FruitResume>()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-
+    public void searchFruit(View view) {
+        VM.getData(binding.TVSearchBox.getText().toString());
+    }
 }

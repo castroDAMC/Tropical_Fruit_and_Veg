@@ -8,23 +8,24 @@ import java.io.IOException;
 
 import damc.castro.com.android.tropicalfruitandveg.Model.FTVItem;
 import damc.castro.com.android.tropicalfruitandveg.Model.FruitSearchList;
-import damc.castro.com.android.tropicalfruitandveg.Network.Requests;
+import damc.castro.com.android.tropicalfruitandveg.Network.BaseRequest;
+import damc.castro.com.android.tropicalfruitandveg.Network.KRequests;
 
 public class SearchConverterTest {
 
-    Requests req = new Requests();
+    BaseRequest req = new KRequests();
     Gson gson = new Gson();
 
     @Test
     public void convertFruitComplete() throws IOException, InterruptedException {
-        String input = req.makeRequest(Requests.ITEM_DETAIL_REQUEST,"XX");
+        String input = req.makeRequest(KRequests.Companion.getITEM_DETAIL_REQUEST(),"XX");
         FTVItem entity = gson.fromJson(input, FTVItem.class);
         System.out.println(entity);
     }
 
     @Test
     public void convertFruitSearch() throws IOException, InterruptedException {
-        String input = req.makeRequest(Requests.SEARCH_REQUEST,"BAN");
+        String input = req.makeRequest(KRequests.Companion.getSEARCH_REQUEST(),"BAN");
         FruitSearchList entity = gson.fromJson(input, FruitSearchList.class);
         System.out.println(entity);
     }

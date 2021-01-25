@@ -6,24 +6,23 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import damc.castro.com.android.tropicalfruitandveg.Controller.KMoreDetailsActivityController;
-import damc.castro.com.android.tropicalfruitandveg.Controller.MoreDetailsActivityController;
+import com.bumptech.glide.Glide;
+
+import damc.castro.com.android.tropicalfruitandveg.Model.FruitComplete;
+import damc.castro.com.android.tropicalfruitandveg.View.RecyclerViewComponents.FruitCompleteAdapter;
+import damc.castro.com.android.tropicalfruitandveg.ViewModel.MoreDetailsViewModel;
 import damc.castro.com.android.tropicalfruitandveg.databinding.ActivityItemDetailBinding;
 
 public class MoreDetailsActivity extends AppCompatActivity {
 
     private ActivityItemDetailBinding binding;
-    private String ftvitem = null;
-    private KMoreDetailsActivityController mController;
+    private MoreDetailsViewModel VM;
 
-    public String getFtvitem(){
-        return this.ftvitem;
-    }
-
-    public ActivityItemDetailBinding getBinding(){
-        return this.binding;
-    }
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,10 +31,30 @@ public class MoreDetailsActivity extends AppCompatActivity {
         binding = ActivityItemDetailBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        setRecyclerViewConfiguration();
+
+        VM = new MoreDetailsViewModel();
+        VM.getFruitLiveData().observe(this, new Observer<FruitComplete>() {
+            @Override
+            public void onChanged(FruitComplete fruitComplete) {
+                ((FruitCompleteAdapter)recyclerView.getAdapter()).setFruitResumeList(fruitComplete);
+                loadImage(fruitComplete.getImageurl());
+            }
+        });
 
         Intent intent = getIntent();
-        ftvitem = intent.getStringExtra("ftvitem");
+        String ftvitem = intent.getStringExtra("ftvitem");
 
-        mController = new KMoreDetailsActivityController(this);
+        VM.getData(ftvitem);
+    }
+
+    private void setRecyclerViewConfiguration() {
+        recyclerView = binding.RVDetail;
+        recyclerView.setAdapter(new FruitCompleteAdapter(new FruitComplete()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    public void loadImage(String imageUrl){
+        Glide.with(this).load(imageUrl).into(binding.IMVItemPhoto);
     }
 }

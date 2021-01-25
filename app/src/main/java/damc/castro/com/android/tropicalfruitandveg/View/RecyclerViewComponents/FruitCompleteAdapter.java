@@ -45,6 +45,8 @@ public class FruitCompleteAdapter extends RecyclerView.Adapter {
 
     public void setFruitResumeList(FruitComplete fruitComplete) {
 
+        this.fruitComplete.clear();
+
         if (fruitComplete != null){
             this.fruitComplete.add("Name : " + fruitComplete.getTfvname() + "\n");
             this.fruitComplete.add("Botanical Name : " + fruitComplete.getBotname()+ "\n");
