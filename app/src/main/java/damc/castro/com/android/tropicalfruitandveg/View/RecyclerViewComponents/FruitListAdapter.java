@@ -44,13 +44,8 @@ public class FruitListAdapter extends RecyclerView.Adapter {
     }
 
     public void setFruitResumeList(List<FruitResume> list) {
-
         this.fruitResumeList.clear();
-
-        for (FruitResume fruitResume : list) {
-            this.fruitResumeList.add(fruitResume);
-        }
-
+        this.fruitResumeList.addAll(list);
         notifyDataSetChanged();
     }
 }

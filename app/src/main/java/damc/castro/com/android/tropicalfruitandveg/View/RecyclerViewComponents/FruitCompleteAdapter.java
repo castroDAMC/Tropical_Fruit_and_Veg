@@ -28,7 +28,7 @@ public class FruitCompleteAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        int layoutForListItem = R.layout.recycler_activity;
+        int layoutForListItem = R.layout.recycler_complete_activity;
         View view = inflater.inflate(layoutForListItem, parent, false);
         return new FruitCompleteHolder(view);
     }

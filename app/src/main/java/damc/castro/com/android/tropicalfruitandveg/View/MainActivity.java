@@ -52,4 +52,6 @@ public class MainActivity extends AppCompatActivity {
     public void searchFruit(View view) {
         VM.getData(binding.TVSearchBox.getText().toString());
     }
+
+
 }

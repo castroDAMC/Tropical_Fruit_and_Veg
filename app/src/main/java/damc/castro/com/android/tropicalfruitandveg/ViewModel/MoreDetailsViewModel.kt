@@ -4,18 +4,17 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import damc.castro.com.android.tropicalfruitandveg.Model.FTVItem
 import damc.castro.com.android.tropicalfruitandveg.Model.FruitComplete
+import damc.castro.com.android.tropicalfruitandveg.Network.BaseRequest
 import damc.castro.com.android.tropicalfruitandveg.Network.KRequests
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MoreDetailsViewModel {
-    private var FTVItemList: MutableLiveData<FruitComplete> = MutableLiveData()
-    private var req = KRequests()
-    private var gson = Gson()
+    private val completeItem: MutableLiveData<FruitComplete> = MutableLiveData()
 
     fun getFruitLiveData(): MutableLiveData<FruitComplete> {
-        return FTVItemList
+        return completeItem
     }
 
     fun getData(fruit: String) {
@@ -23,10 +22,10 @@ class MoreDetailsViewModel {
         val entity = arrayOfNulls<FTVItem>(1)
 
         GlobalScope.launch(Dispatchers.Default) {
-            input[0] = req.makeRequest(KRequests.ITEM_DETAIL_REQUEST, fruit)
+            input[0] = KRequests().makeRequest(BaseRequest.ITEM_DETAIL_REQUEST, fruit)
+            entity[0] = Gson().fromJson(input[0], FTVItem::class.java)
 
-            entity[0] = gson.fromJson(input[0], FTVItem::class.java)
-            FTVItemList.postValue(entity[0]!!.results[0])
+            completeItem.postValue(entity[0]!!.results[0])
         }
     }
 }

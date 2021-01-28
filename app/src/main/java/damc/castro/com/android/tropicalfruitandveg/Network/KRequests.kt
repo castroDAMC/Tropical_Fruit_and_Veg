@@ -4,23 +4,14 @@ import android.content.Context
 import android.net.ConnectivityManager
 import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.Request
-import java.io.IOException
 
 class KRequests : BaseRequest{
 
-    companion object{
-        val SEARCH_REQUEST = "search"
-        val ITEM_DETAIL_REQUEST = "tfvitem"
-
-        var client = OkHttpClient()
-        var URL_BASE = "http://api.tropicalfruitandveg.com/tfvjsonapi.php?"
-    }
-
-
+    var client = OkHttpClient()
 
     override fun makeRequest(TYPE_OF_REQUEST: String, parameter: String): String {
         val req: Request = Request.Builder()
-                .url("$URL_BASE$TYPE_OF_REQUEST=$parameter")
+                .url(BaseRequest.URL_BASE + TYPE_OF_REQUEST + "=" + parameter)
                 .build()
         return client.newCall(req).execute().body().string()
     }

@@ -5,13 +5,16 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import damc.castro.com.android.tropicalfruitandveg.Model.FruitResume
 import damc.castro.com.android.tropicalfruitandveg.Model.FruitSearchList
+import damc.castro.com.android.tropicalfruitandveg.Network.BaseRequest
 import damc.castro.com.android.tropicalfruitandveg.Network.KRequests
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+typealias mutable = MutableLiveData<List<FruitResume>>
+
 class MainActivityViewModel : ViewModel() {
-    private var fruitListLiveData : MutableLiveData<List<FruitResume>> = MutableLiveData()
+    private var fruitListLiveData : mutable = MutableLiveData()
     private var req: KRequests = KRequests()
     private var gson: Gson  = Gson()
 
@@ -20,15 +23,8 @@ class MainActivityViewModel : ViewModel() {
         getData( "")
     }
 
-    fun getFruitLiveData(): MutableLiveData<List<FruitResume>>{
+    fun getFruitLiveData(): mutable{
         return fruitListLiveData
-    }
-
-    fun filterFruit(arg: String){
-        fruitListLiveData.value!!.filter {
-            fruitResume -> fruitResume.tfvname.contains(arg)
-        }
-        print("fruit")
     }
 
     fun getData(param: String) {
@@ -43,7 +39,7 @@ class MainActivityViewModel : ViewModel() {
         val finalToBeSearch = toBeSearch
 
         GlobalScope.launch(Dispatchers.Default){
-            input[0] = req.makeRequest(KRequests.SEARCH_REQUEST, finalToBeSearch)
+            input[0] = req.makeRequest(BaseRequest.SEARCH_REQUEST, finalToBeSearch)
 
             if (input[0].contains("\"error\":\"No results found")) {
             } else {
@@ -54,3 +50,4 @@ class MainActivityViewModel : ViewModel() {
     }
 
 }
+
